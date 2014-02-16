@@ -35,4 +35,4 @@ There are some drawbacks:
 #How To Use
 -----------
 
-See the Example class
+See the [ExampleMain class](/src/org/jrenner/smartfont/example/ExampleMain.java)
