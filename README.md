@@ -3,7 +3,7 @@ gdx-smart-font
 
 LibGDX - Generate bitmap fonts in proportion to screen size and cache them to file.
 
-SmartFontGenerator is a class you can copy/paste into your libgdx project to smartly generated bitmap fonts.
+SmartFontGenerator is a class you can copy/paste into your libgdx project to smartly generate bitmap fonts.
 
 It makes use of gdx-extension FreeTypeFontGenerator.  If you are unfamiliar with this extension, please read up on it
 [here](https://github.com/libgdx/libgdx/wiki/Gdx-freetype)
