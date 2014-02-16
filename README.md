@@ -36,3 +36,9 @@ There are some drawbacks:
 -----------
 
 See the [ExampleMain class](/src/org/jrenner/smartfont/example/ExampleMain.java)
+
+#Example Screenshots
+--------------------
+![](example_screenshots/small_screen.png)
+![](example_screenshots/medium_screen.png)
+![](example_screenshots/large_screen.png)
