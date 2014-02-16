@@ -35,7 +35,12 @@ There are some drawbacks:
 #How To Use
 -----------
 
-See the [ExampleMain class](/src/org/jrenner/smartfont/example/ExampleMain.java)
+1. Make sure your project/workspace has the libgdx freetype extension
+
+2. Copy the SmartFontGenerator class somewhere into your project/workspace
+
+3. See the [ExampleMain class](/src/org/jrenner/smartfont/example/ExampleMain.java)
+for how SmartFontGenerator should be used inside your app.
 
 #Example Screenshots
 --------------------
