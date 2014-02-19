@@ -8,7 +8,7 @@ SmartFontGenerator is a class you can copy/paste into your libgdx project to sma
 It makes use of gdx-extension FreeTypeFontGenerator.  If you are unfamiliar with this extension, please read up on it
 [here](https://github.com/libgdx/libgdx/wiki/Gdx-freetype)
 
-#Used In (edit this README to add your app)
+####Used In (edit this README to add your app)
 * [Superior Tactics](https://play.google.com/store/apps/details?id=org.jrenner.superior)
 
 #Purpose
