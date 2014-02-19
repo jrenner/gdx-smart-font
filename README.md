@@ -21,7 +21,6 @@ and are targeting 5-6 different screen sizes, you then must generate 20-24 bitma
 * Generating fonts cuts down on app download size, no need to include pngs.
 
 * Generating fonts can add significant time to app startup time.  Caching the generated fonts to file, and only regenerating when needed allows for fast app startup most of the time.
-* 
 
 #Drawbacks
 
