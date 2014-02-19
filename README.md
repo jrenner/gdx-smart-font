@@ -12,7 +12,6 @@ It makes use of gdx-extension FreeTypeFontGenerator.  If you are unfamiliar with
 * [Superior Tactics](https://play.google.com/store/apps/details?id=org.jrenner.superior)
 
 #Purpose
--------
 
 This class provides several benefits:
 
@@ -25,7 +24,6 @@ and are targeting 5-6 different screen sizes, you then must generate 20-24 bitma
 * 
 
 #Drawbacks
-----------
 
 There are some drawbacks:
 
@@ -36,7 +34,6 @@ There are some drawbacks:
 * (TODO) The generated fonts are not packed into your UI skin, so drawing the font will force a separate texture bind.
 
 #How To Use
------------
 
 1. Make sure your project/workspace has the libgdx freetype extension
 
@@ -46,7 +43,7 @@ There are some drawbacks:
 for how SmartFontGenerator should be used inside your app.
 
 #Example Screenshots
---------------------
+
 ![](example_screenshots/small_screen.png)
 ![](example_screenshots/medium_screen.png)
 ![](example_screenshots/large_screen.png)
