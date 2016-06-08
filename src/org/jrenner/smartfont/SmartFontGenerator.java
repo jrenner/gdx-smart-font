@@ -1,5 +1,7 @@
 package org.jrenner.smartfont;
 
+import org.jrenner.smartfont.writer.BitmapFontWriter;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
@@ -9,10 +11,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.jrenner.smartfont.writer.BitmapFontWriter;
 
 public class SmartFontGenerator {
 	private static final String TAG = "SmartFontGenerator";
@@ -48,7 +50,7 @@ public class SmartFontGenerator {
 			try {
 				// try to load from file
 				Gdx.app.debug(TAG, "Loading generated font from file cache");
-				font = new BitmapFont(getFontFile(fontName + ".fnt"));
+				font = new BitmapFont(getFontFile(fontName + ".fnt", fontSize));
 				loaded = true;
 			} catch (GdxRuntimeException e) {
 				Gdx.app.error(TAG, e.getMessage());
@@ -82,22 +84,28 @@ public class SmartFontGenerator {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
 
 		PixmapPacker packer = new PixmapPacker(pageWidth, pageHeight, Pixmap.Format.RGBA8888, 2, false);
-		FreeTypeFontGenerator.FreeTypeBitmapFontData fontData = generator.generateData(fontSize, FreeTypeFontGenerator.DEFAULT_CHARS, false, packer);
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = fontSize;
+		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS;
+		parameter.flip = false;
+		parameter.packer = packer;
+		FreeTypeFontGenerator.FreeTypeBitmapFontData fontData = generator.generateData(parameter);
 		Array<PixmapPacker.Page> pages = packer.getPages();
-		TextureRegion[] texRegions = new TextureRegion[pages.size];
-		for (int i=0; i<pages.size; i++) {
+		Array<TextureRegion> texRegions = new Array<>();
+		for (int i = 0; i < pages.size; i++) {
 			PixmapPacker.Page p = pages.get(i);
-			Texture tex = new Texture(new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(), false, false, true)) {
+			Texture tex = new Texture(
+					new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(), false, false, true)) {
 				@Override
-				public void dispose () {
+				public void dispose() {
 					super.dispose();
 					getTextureData().consumePixmap().dispose();
 				}
 			};
 			tex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-			texRegions[i] = new TextureRegion(tex);
+			texRegions.add(new TextureRegion(tex));
 		}
-		BitmapFont font = new BitmapFont(fontData, texRegions, false);
+		BitmapFont font = new BitmapFont((BitmapFont.BitmapFontData) fontData, texRegions, false);
 		saveFontToFile(font, fontSize, fontName, packer);
 		generator.dispose();
 		packer.dispose();
@@ -105,21 +113,21 @@ public class SmartFontGenerator {
 	}
 
 	private void saveFontToFile(BitmapFont font, int fontSize, String fontName, PixmapPacker packer) {
-		FileHandle fontFile = getFontFile(fontName + ".fnt"); // .fnt path
-		FileHandle pixmapDir = getFontFile(fontName); // png dir path
+		FileHandle fontFile = getFontFile(fontName + ".fnt", fontSize); // .fnt path
+		FileHandle pixmapDir = getFontFile(fontName, fontSize); // png dir path
 		BitmapFontWriter.setOutputFormat(BitmapFontWriter.OutputFormat.Text);
 
 		String[] pageRefs = BitmapFontWriter.writePixmaps(packer.getPages(), pixmapDir, fontName);
 		Gdx.app.debug(TAG, String.format("Saving font [%s]: fontfile: %s, pixmapDir: %s\n", fontName, fontFile, pixmapDir));
 		// here we must add the png dir to the page refs
 		for (int i = 0; i < pageRefs.length; i++) {
-			pageRefs[i] = fontName + "/" + pageRefs[i];
+			pageRefs[i] = fontSize + "_" + fontName + "/" + pageRefs[i];
 		}
 		BitmapFontWriter.writeFont(font.getData(), pageRefs, fontFile, new BitmapFontWriter.FontInfo(fontName, fontSize), 1, 1);
 	}
 
-	private FileHandle getFontFile(String filename) {
-		return Gdx.files.local(generatedFontDir + filename);
+	private FileHandle getFontFile(String filename, int fontSize) {
+		return Gdx.files.local(generatedFontDir + fontSize + "_" + filename);
 	}
 
 	// GETTERS, SETTERS -----------------------
